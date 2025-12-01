@@ -43,7 +43,7 @@ server.registerTool(
   "generate_meme",
   {
     description: "Generate a meme using a specific template ID and custom text",
-    inputSchema: {
+    inputSchema: z.object({
       username: z.string().describe("Imgflip username"),
       password: z.string().describe("Imgflip password"),
       template_id: z
@@ -58,7 +58,19 @@ server.registerTool(
         .string()
         .optional()
         .describe("Text for the second text box (usually bottom text)"),
-    },
+      text2: z
+        .string()
+        .optional()
+        .describe("Text for the third text box (if template supports it)"),
+      text3: z
+        .string()
+        .optional()
+        .describe("Text for the fourth text box (if template supports it)"),
+      text4: z
+        .string()
+        .optional()
+        .describe("Text for the fifth text box (if template supports it)"),
+    }),
     outputSchema: z.object({
       meme_url: z.string().describe("The URL of the generated meme"),
     }),
@@ -84,6 +96,9 @@ async function generateMeme(args: any) {
     
     // Add optional text fields if provided
     if (args.text1) formData.append("text1", args.text1);
+    if (args.text2) formData.append("text2", args.text2);
+    if (args.text3) formData.append("text3", args.text3);
+    if (args.text4) formData.append("text4", args.text4);
 
     const response = await axios.post<ImgflipCaptionResponse>(
       IMGFLIP_CAPTION_IMAGE_URL,
