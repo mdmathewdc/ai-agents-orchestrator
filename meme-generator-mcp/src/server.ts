@@ -114,18 +114,18 @@ async function generateMeme(args: any) {
       throw new Error(response.data.error_message || "Failed to generate meme");
     }
 
-    const memeUrl = response.data.data?.url;
+    const memeUrl = response.data.data?.url || "";
 
     return {
+      // Human-readable text content
       content: [
         {
           type: "text" as const,
           text: `Meme generated successfully!\n\nDirect Image URL: ${memeUrl}`,
         },
       ],
-      output: {
-        meme_url: memeUrl || "",
-      },
+      // Structured fields that match outputSchema
+      meme_url: memeUrl,
     };
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
