@@ -57,7 +57,7 @@ server.registerTool(
       text1: z
         .string()
         .optional()
-        .describe("Text for the second text box (usually bottom text)")
+        .describe("Text for the second text box (usually bottom text)"),
     },
     outputSchema: z.object({
       meme_url: z.string().describe("The URL of the generated meme"),
@@ -108,6 +108,9 @@ async function generateMeme(args: any) {
           text: `Meme generated successfully!\n\nDirect Image URL: ${memeUrl}`,
         },
       ],
+      output: {
+        meme_url: memeUrl || "",
+      },
     };
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
