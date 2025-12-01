@@ -21,7 +21,17 @@ interface ImgflipCaptionResponse {
 // Initialize Express app
 const app = express();
 app.use(cors());
-app.use(express.json());
+
+// IMPORTANT: Don't use express.json() middleware for the /mcp endpoint
+// The MCP transport needs to handle the raw request body
+app.use((req, res, next) => {
+  if (req.path === '/mcp') {
+    // Skip body parsing for MCP endpoint
+    next();
+  } else {
+    express.json()(req, res, next);
+  }
+});
 
 // MCP Server setup
 const server = new McpServer({
@@ -47,19 +57,7 @@ server.registerTool(
       text1: z
         .string()
         .optional()
-        .describe("Text for the second text box (usually bottom text)"),
-      text2: z
-        .string()
-        .optional()
-        .describe("Text for the third text box (if template supports it)"),
-      text3: z
-        .string()
-        .optional()
-        .describe("Text for the fourth text box (if template supports it)"),
-      text4: z
-        .string()
-        .optional()
-        .describe("Text for the fifth text box (if template supports it)"),
+        .describe("Text for the second text box (usually bottom text)")
     },
     outputSchema: z.object({
       meme_url: z.string().describe("The URL of the generated meme"),
@@ -123,14 +121,39 @@ async function generateMeme(args: any) {
   }
 }
 
+// Handle MCP requests - create new transport for each request
 app.all("/mcp", async (req, res) => {
-  const transport = new StreamableHTTPServerTransport({
-    sessionIdGenerator: undefined, // Stateless mode
-    enableJsonResponse: true,
+  console.log("Received MCP request:", req.method, req.headers);
+  
+  try {
+    const transport = new StreamableHTTPServerTransport({
+      sessionIdGenerator: undefined,
+      enableJsonResponse: true,
+    });
+    
+    await server.connect(transport);
+    await transport.handleRequest(req, res);
+    
+    console.log("MCP request handled successfully");
+  } catch (error) {
+    console.error("Error handling MCP request:", error);
+    if (!res.headersSent) {
+      res.status(500).json({ 
+        error: "Internal server error",
+        message: error instanceof Error ? error.message : String(error)
+      });
+    }
+  }
+});
+
+// Health check endpoint
+app.get("/", (req, res) => {
+  res.json({
+    status: "ok",
+    name: "meme-generator-mcp",
+    version: "1.0.0",
+    endpoint: "/mcp"
   });
-  await server.connect(transport);
-  await transport.handleRequest(req, res);
-  console.log("MCP client connected via StreamableHTTP");
 });
 
 // Start server
@@ -139,4 +162,5 @@ app.listen(PORT, () => {
     `🚀 Meme Generator MCP Server running on http://localhost:${PORT}`
   );
   console.log(`📍 MCP endpoint: http://localhost:${PORT}/mcp`);
+  console.log(`🏥 Health check: http://localhost:${PORT}/`);
 });
