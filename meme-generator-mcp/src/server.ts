@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
+
 import axios from "axios";
 import { z } from "zod";
 
@@ -125,6 +126,7 @@ async function generateMeme(args: any) {
 app.all("/mcp", async (req, res) => {
   const transport = new StreamableHTTPServerTransport({
     sessionIdGenerator: undefined, // Stateless mode
+    enableJsonResponse: true,
   });
   await server.connect(transport);
   await transport.handleRequest(req, res);
