@@ -1,6 +1,6 @@
 # Meme Generator MCP Server
 
-[![npm version](https://img.shields.io/npm/v/meme-generator-mcp.svg)](https://www.npmjs.com/package/meme-generator-mcp)
+[![npm version](https://img.shields.io/npm/v/imgflip-meme-mcp.svg)](https://www.npmjs.com/package/imgflip-meme-mcp)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 An Express.js-based Model Context Protocol (MCP) server that generates memes using the [Imgflip API](https://imgflip.com/api). This server provides a standardized MCP interface for AI agents and applications to create custom memes programmatically.
@@ -15,7 +15,7 @@ An Express.js-based Model Context Protocol (MCP) server that generates memes usi
 ## Installation
 
 ```bash
-npm install meme-generator-mcp
+npm install imgflip-meme-mcp
 ```
 
 ## Quick Start
@@ -23,7 +23,7 @@ npm install meme-generator-mcp
 ### 1. Start the Server
 
 ```bash
-npx meme-generator-mcp
+npx imgflip-meme-mcp
 ```
 
 Or if installed locally:
@@ -107,7 +107,7 @@ To find available meme templates and their IDs, visit the [Imgflip API documenta
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd meme-generator-mcp
+cd imgflip-meme-mcp
 ```
 
 2. Install dependencies:
@@ -135,7 +135,7 @@ npm start
 ### Project Structure
 
 ```
-meme-generator-mcp/
+imgflip-meme-mcp/
 ├── src/
 │   └── server.ts          # Main server implementation
 ├── dist/                   # Compiled JavaScript (generated)

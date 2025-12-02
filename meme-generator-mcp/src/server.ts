@@ -29,7 +29,7 @@ app.use((req, res, next) => {
 });
 
 const server = new McpServer({
-  name: "meme-generator-mcp",
+  name: "imgflip-meme-mcp",
   version: "1.0.0",
 });
 
@@ -161,7 +161,7 @@ app.all("/mcp", async (req, res) => {
 app.get("/", (req, res) => {
   res.json({
     status: "ok",
-    name: "meme-generator-mcp",
+    name: "imgflip-meme-mcp",
     version: "1.0.0",
     endpoint: "/mcp",
   });
