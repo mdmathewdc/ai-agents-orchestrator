@@ -1,4 +1,5 @@
-import { createAgent, initChatModel } from "langchain";
+import { createAgent } from "langchain";
+import { ChatOpenAI } from "@langchain/openai";
 
 const EMOTION_AGENT_PROMPT = `
 You are an emotion analysis assistant. Analyze the user's feelings and emotions from their input and generate a concise 1-line summary that captures the essence of their emotional state. 
@@ -17,9 +18,8 @@ Examples:
 `.trim();
 
 export async function createEmotionAgent(): Promise<ReturnType<typeof createAgent>> {
-  const model = await initChatModel("openai", {
+  const model = new ChatOpenAI({
     model: "gpt-4o-mini",
-    modelProvider: "openai",
     temperature: 0.7,
   });
 

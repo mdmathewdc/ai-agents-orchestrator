@@ -6,7 +6,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-let supervisorAgent: Awaited<ReturnType<typeof createSupervisorAgent>> | null = null;
+let supervisorAgent: Awaited<ReturnType<typeof createSupervisorAgent>> | null =
+  null;
 
 async function getSupervisorAgent() {
   if (!supervisorAgent) {
@@ -28,6 +29,14 @@ app.get("/", (req, res) => {
 // Main endpoint: Generate meme from user feeling
 app.post("/generate-meme", async (req, res) => {
   try {
+    if (!req.body) {
+      return res.status(400).json({
+        error: "Invalid request",
+        message:
+          "Request body is missing. Please send JSON with 'feeling' field.",
+      });
+    }
+
     const { feeling } = req.body;
 
     if (!feeling || typeof feeling !== "string") {
@@ -56,14 +65,20 @@ app.post("/generate-meme", async (req, res) => {
     }
 
     // Try to extract summary from structured format
-    const summaryMatch = responseText.match(/Emotion Summary:\s*(.+?)(?:\n|Meme URL:|$)/i);
+    const summaryMatch = responseText.match(
+      /Emotion Summary:\s*(.+?)(?:\n|Meme URL:|$)/i
+    );
     if (summaryMatch) {
       summary = summaryMatch[1].trim();
     } else {
       // Fallback: extract first meaningful line that doesn't contain URL
       const lines = responseText.split("\n").filter((line) => {
         const trimmed = line.trim();
-        return trimmed.length > 0 && !trimmed.match(/https?:\/\//) && !trimmed.match(/^Meme URL:/i);
+        return (
+          trimmed.length > 0 &&
+          !trimmed.match(/https?:\/\//) &&
+          !trimmed.match(/^Meme URL:/i)
+        );
       });
       if (lines.length > 0) {
         summary = lines[0].trim();
@@ -96,4 +111,3 @@ app.post("/generate-meme", async (req, res) => {
 
 export { app };
 export default app;
-

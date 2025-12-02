@@ -1,4 +1,5 @@
-import { createAgent, initChatModel, tool } from "langchain";
+import { createAgent, tool } from "langchain";
+import { ChatOpenAI } from "@langchain/openai";
 import { z } from "zod";
 import { createEmotionAgent } from "./emotionAgent.js";
 import { createMemeAgent } from "./memeAgent.js";
@@ -88,9 +89,8 @@ const generateMemeFromSummaryTool = tool(
 export async function createSupervisorAgent(): Promise<
   ReturnType<typeof createAgent>
 > {
-  const model = await initChatModel("openai", {
+  const model = new ChatOpenAI({
     model: "gpt-4o-mini",
-    modelProvider: "openai",
     temperature: 0.7,
   });
 
