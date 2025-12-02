@@ -1,0 +1,55 @@
+{
+  "name": "imgflip-meme-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for generating memes using the Imgflip API",
+  "type": "module",
+  "main": "dist/server.js",
+  "bin": {
+    "imgflip-meme-mcp": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "tsc && node dist/server.js",
+    "watch": "tsc --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "meme",
+    "meme-generator",
+    "imgflip",
+    "express",
+    "ai",
+    "agent",
+    "server"
+  ],
+  "author": "Mathew Dony <mathewdony007@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mdmathewdc/ai-agents-orchestrator.git",
+    "directory": "imgflip-meme-mcp"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.23.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.5",
+    "axios": "^1.7.9",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  }
+}
