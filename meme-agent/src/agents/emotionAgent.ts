@@ -19,6 +19,7 @@ Examples:
 export async function createEmotionAgent(): Promise<ReturnType<typeof createAgent>> {
   const model = await initChatModel("openai", {
     model: "gpt-4o-mini",
+    modelProvider: "openai",
     temperature: 0.7,
   });
 

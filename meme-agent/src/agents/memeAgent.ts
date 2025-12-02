@@ -33,19 +33,44 @@ const client = new MultiServerMCPClient({
   },
 });
 
-const tools = await client.getTools();
-
 export async function createMemeAgent(): Promise<
   ReturnType<typeof createAgent>
 > {
+  if (!IMGFLIP_USERNAME || !IMGFLIP_PASSWORD) {
+    throw new Error(
+      "IMGFLIP_USERNAME and IMGFLIP_PASSWORD environment variables are required"
+    );
+  }
+
   const model = await initChatModel("openai", {
     model: "gpt-4o-mini",
+    modelProvider: "openai",
     temperature: 0.8,
   });
 
+  const mcpTools = await client.getTools();
+
+  const generateMemeTool = mcpTools.find(
+    (tool) => tool.name === "generate_meme"
+  );
+
+  if (!generateMemeTool) {
+    throw new Error("generate_meme tool not found in MCP server");
+  }
+
+  const originalInvoke = generateMemeTool.invoke.bind(generateMemeTool);
+
+  generateMemeTool.invoke = async (input: any) => {
+    return originalInvoke({
+      ...input,
+      username: IMGFLIP_USERNAME,
+      password: IMGFLIP_PASSWORD,
+    });
+  };
+
   const agent = createAgent({
     model,
-    tools,
+    tools: [generateMemeTool],
     systemPrompt: MEME_AGENT_PROMPT,
   });
 

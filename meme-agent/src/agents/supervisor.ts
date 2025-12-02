@@ -90,6 +90,7 @@ export async function createSupervisorAgent(): Promise<
 > {
   const model = await initChatModel("openai", {
     model: "gpt-4o-mini",
+    modelProvider: "openai",
     temperature: 0.7,
   });
 
