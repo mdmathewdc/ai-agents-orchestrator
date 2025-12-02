@@ -2,7 +2,6 @@ import express from "express";
 import cors from "cors";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
-
 import axios from "axios";
 import { z } from "zod";
 
@@ -18,22 +17,17 @@ interface ImgflipCaptionResponse {
   error_message?: string;
 }
 
-// Initialize Express app
 const app = express();
 app.use(cors());
 
-// IMPORTANT: Don't use express.json() middleware for the /mcp endpoint
-// The MCP transport needs to handle the raw request body
 app.use((req, res, next) => {
-  if (req.path === '/mcp') {
-    // Skip body parsing for MCP endpoint
+  if (req.path === "/mcp") {
     next();
   } else {
     express.json()(req, res, next);
   }
 });
 
-// MCP Server setup
 const server = new McpServer({
   name: "meme-generator-mcp",
   version: "1.0.0",
@@ -42,7 +36,8 @@ const server = new McpServer({
 server.registerTool(
   "generate_meme",
   {
-    description: "Generate a meme using a specific template ID and custom text",
+    description:
+      "Generate a meme from Imgflip using a specific template ID and custom text",
     inputSchema: z.object({
       username: z.string().describe("Imgflip username"),
       password: z.string().describe("Imgflip password"),
@@ -72,7 +67,7 @@ server.registerTool(
         .describe("Text for the fifth text box (if template supports it)"),
     }),
     outputSchema: z.object({
-      meme_url: z.string().describe("The URL of the generated meme"),
+      meme_url: z.string(),
     }),
   },
   async (args) => {
@@ -93,8 +88,7 @@ async function generateMeme(args: any) {
     formData.append("username", args.username);
     formData.append("password", args.password);
     formData.append("text0", args.text0);
-    
-    // Add optional text fields if provided
+
     if (args.text1) formData.append("text1", args.text1);
     if (args.text2) formData.append("text2", args.text2);
     if (args.text3) formData.append("text3", args.text3);
@@ -117,15 +111,15 @@ async function generateMeme(args: any) {
     const memeUrl = response.data.data?.url || "";
 
     return {
-      // Human-readable text content
       content: [
         {
           type: "text" as const,
-          text: `Meme generated successfully!\n\nDirect Image URL: ${memeUrl}`,
+          text: `Meme generated successfully! Meme image URL: ${memeUrl}`,
         },
       ],
-      // Structured fields that match outputSchema
-      meme_url: memeUrl,
+      structuredContent: {
+        meme_url: memeUrl,
+      },
     };
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -139,26 +133,25 @@ async function generateMeme(args: any) {
   }
 }
 
-// Handle MCP requests - create new transport for each request
 app.all("/mcp", async (req, res) => {
   console.log("Received MCP request:", req.method, req.headers);
-  
+
   try {
     const transport = new StreamableHTTPServerTransport({
       sessionIdGenerator: undefined,
       enableJsonResponse: true,
     });
-    
+
     await server.connect(transport);
     await transport.handleRequest(req, res);
-    
+
     console.log("MCP request handled successfully");
   } catch (error) {
     console.error("Error handling MCP request:", error);
     if (!res.headersSent) {
-      res.status(500).json({ 
+      res.status(500).json({
         error: "Internal server error",
-        message: error instanceof Error ? error.message : String(error)
+        message: error instanceof Error ? error.message : String(error),
       });
     }
   }
@@ -170,11 +163,10 @@ app.get("/", (req, res) => {
     status: "ok",
     name: "meme-generator-mcp",
     version: "1.0.0",
-    endpoint: "/mcp"
+    endpoint: "/mcp",
   });
 });
 
-// Start server
 app.listen(PORT, () => {
   console.log(
     `🚀 Meme Generator MCP Server running on http://localhost:${PORT}`
