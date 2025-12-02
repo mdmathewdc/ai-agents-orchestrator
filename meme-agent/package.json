@@ -1,0 +1,39 @@
+{
+  "name": "meme-agent",
+  "version": "1.0.0",
+  "description": "Supervisor agent system for generating memes based on emotions",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsc && node dist/index.js",
+    "watch": "tsc --watch"
+  },
+  "keywords": [
+    "langchain",
+    "supervisor",
+    "agent",
+    "meme",
+    "ai"
+  ],
+  "author": "Mathew Dony <mathewdony007@gmail.com>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@langchain/mcp-adapters": "^1.0.2",
+    "@modelcontextprotocol/sdk": "^1.23.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "langchain": "^1.1.2",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.5",
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  }
+}
