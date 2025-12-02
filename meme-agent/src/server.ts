@@ -95,4 +95,5 @@ app.post("/generate-meme", async (req, res) => {
 });
 
 export { app };
+export default app;
 
