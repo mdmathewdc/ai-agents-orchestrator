@@ -29,8 +29,13 @@
     "agent",
     "server"
   ],
-  "author": "",
+  "author": "Mathew Dony <mathewdony007@gmail.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mdmathewdc/ai-agents-orchestrator.git",
+    "directory": "meme-generator-mcp"
+  },
   "engines": {
     "node": ">=18.0.0"
   },
