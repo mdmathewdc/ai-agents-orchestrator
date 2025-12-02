@@ -4,20 +4,36 @@
   "description": "MCP server for generating memes using the Imgflip API",
   "type": "module",
   "main": "dist/server.js",
+  "bin": {
+    "meme-generator-mcp": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsc",
     "start": "node dist/server.js",
     "dev": "tsc && node dist/server.js",
-    "watch": "tsc --watch"
+    "watch": "tsc --watch",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "mcp",
+    "model-context-protocol",
     "meme",
+    "meme-generator",
     "imgflip",
-    "express"
+    "express",
+    "ai",
+    "agent",
+    "server"
   ],
   "author": "",
   "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.23.0",
     "@types/cors": "^2.8.19",
