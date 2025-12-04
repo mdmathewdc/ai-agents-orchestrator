@@ -184,15 +184,6 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ---
 
-## 🙏 Acknowledgments
-
-- [LangChain](https://www.langchain.com/) for the amazing agent framework
-- [Model Context Protocol](https://modelcontextprotocol.io/) for the protocol specification
-- [Imgflip](https://imgflip.com/) for the meme generation API
-- [OpenAI](https://openai.com/) for the language models
-
----
-
 ## 📧 Contact
 
 **Author:** Mathew Dony  
