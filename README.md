@@ -147,34 +147,6 @@ curl -X POST http://localhost:3001/generate-meme \
 
 ---
 
-## 📁 Project Structure
-
-```
-ai-agents-orchestrator/
-│
-├── imgflip-meme-mcp/          # MCP Server
-│   ├── src/
-│   │   ├── server.ts          # Express + MCP server
-│   │   └── cli.ts             # CLI entry point
-│   ├── package.json
-│   └── README.md
-│
-├── meme-agent/                 # Multi-Agent System
-│   ├── src/
-│   │   ├── agents/
-│   │   │   ├── emotionAgent.ts    # Emotion analysis agent
-│   │   │   ├── memeAgent.ts       # Meme generation agent
-│   │   │   └── supervisor.ts      # Supervisor coordinator
-│   │   ├── server.ts              # Express API server
-│   │   └── index.ts               # Application entry
-│   ├── package.json
-│   └── README.MD
-│
-└── README.md                   # This file
-```
-
----
-
 ## 🛠️ Development
 
 ### Running in Development Mode
@@ -197,44 +169,6 @@ npm run watch  # Watch mode for auto-rebuild
 # Build both projects
 cd imgflip-meme-mcp && npm run build
 cd ../meme-agent && npm run build
-```
-
----
-
-## 🧪 Testing
-
-### Test the MCP Server
-
-```bash
-# Start the MCP server
-cd imgflip-meme-mcp
-npm start
-
-# In another terminal, test with curl
-curl -X POST http://localhost:3000/mcp \
-  -H "Content-Type: application/json" \
-  -d '{
-    "jsonrpc": "2.0",
-    "id": 1,
-    "method": "tools/list",
-    "params": {}
-  }'
-```
-
-### Test the Meme Agent
-
-```bash
-# Start both servers
-# Terminal 1: MCP Server
-cd imgflip-meme-mcp && npm start
-
-# Terminal 2: Meme Agent
-cd meme-agent && npm start
-
-# Terminal 3: Test API
-curl -X POST http://localhost:3001/generate-meme \
-  -H "Content-Type: application/json" \
-  -d '{"feeling": "I love coding!"}'
 ```
 
 ---
