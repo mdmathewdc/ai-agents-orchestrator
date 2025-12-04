@@ -25,11 +25,11 @@ This project demonstrates a **production-ready AI agent orchestration system** t
 ```
 User Input: "I'm stressed about my exam"
     ↓
+[Supervisor] → Coordinates workflow → Returns complete response
+    ↓
 [Emotion Agent] → Analyzes emotion → "Feeling anxious about upcoming exam"
     ↓
 [Meme Agent] → Generates meme → 🎨 Meme URL
-    ↓
-[Supervisor] → Coordinates workflow → Returns complete response
 ```
 
 ---
