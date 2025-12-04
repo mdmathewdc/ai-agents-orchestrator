@@ -113,38 +113,6 @@ npm start
 
 ---
 
-## 📡 API Usage
-
-### Generate Meme from Emotion
-
-**Endpoint:** `POST http://localhost:3001/generate-meme`
-
-**Request:**
-```json
-{
-  "feeling": "I'm so stressed about my exam tomorrow"
-}
-```
-
-**Response:**
-```json
-{
-  "summary": "Feeling anxious and overwhelmed about upcoming exam",
-  "meme_url": "https://i.imgflip.com/xxxxx.jpg",
-  "full_response": "Emotion Summary: Feeling anxious and overwhelmed about upcoming exam\nMeme URL: https://i.imgflip.com/xxxxx.jpg"
-}
-```
-
-### Example with cURL
-
-```bash
-curl -X POST http://localhost:3001/generate-meme \
-  -H "Content-Type: application/json" \
-  -d '{
-    "feeling": "I just aced my final exam!"
-  }'
-```
-
 ---
 
 ## 🛠️ Development
