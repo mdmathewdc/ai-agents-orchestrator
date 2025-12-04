@@ -147,46 +147,6 @@ curl -X POST http://localhost:3001/generate-meme \
 
 ---
 
-## 🧩 How It Works
-
-### Agent Architecture
-
-```
-┌─────────────────────────────────────────┐
-│         Supervisor Agent                 │
-│  (Coordinates the workflow)              │
-└──────────────┬──────────────────────────┘
-               │
-       ┌───────┴────────┐
-       │                 │
-       ▼                 ▼
-┌──────────────┐  ┌──────────────┐
-│  Emotion     │  │   Meme       │
-│  Agent       │  │   Agent       │
-│              │  │               │
-│ Analyzes     │  │ Generates     │
-│ emotions     │  │ memes via     │
-│              │  │ MCP server    │
-└──────────────┘  └──────────────┘
-```
-
-### Workflow Steps
-
-1. **User Input** → Supervisor receives emotion/feeling
-2. **Emotion Analysis** → Emotion Agent processes input and generates 1-line summary
-3. **Meme Generation** → Meme Agent uses summary to create appropriate meme via MCP
-4. **Response** → Supervisor formats and returns complete result
-
-### MCP Integration
-
-The Meme Agent uses `@langchain/mcp-adapters` to connect to the MCP server, enabling seamless tool calling:
-
-- **Tool**: `generate_meme`
-- **Transport**: HTTP/SSE (StreamableHTTPServerTransport)
-- **Protocol**: Model Context Protocol v2024-11-05
-
----
-
 ## 📁 Project Structure
 
 ```
