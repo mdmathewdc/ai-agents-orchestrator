@@ -17,47 +17,6 @@ interface ImgflipCaptionResponse {
   error_message?: string;
 }
 
-/**
- * Sanitizes a URL string to ensure it's a clean URL without markdown formatting.
- * Handles cases like:
- * - "[https://example.com](https://example.com)" -> "https://example.com"
- * - "https://example.com](https://example.com)" -> "https://example.com"
- * - "https://example.com" -> "https://example.com"
- */
-function sanitizeUrl(url: string): string {
-  if (!url || typeof url !== "string") {
-    return "";
-  }
-
-  let cleaned = url.trim();
-
-  // Handle markdown link format: [text](url) or [url](url) - extract the URL from parentheses
-  const markdownLinkMatch = cleaned.match(/\[([^\]]*)\]\(([^)]+)\)/);
-  if (markdownLinkMatch) {
-    cleaned = markdownLinkMatch[2]; // Use the URL from parentheses
-  }
-
-  // Handle partial markdown: url](url - extract the first URL before the ]
-  const partialMarkdownMatch = cleaned.match(/^([^\]]+)\]/);
-  if (partialMarkdownMatch) {
-    cleaned = partialMarkdownMatch[1];
-  }
-
-  // Extract the first valid URL pattern (http:// or https://)
-  // Match URL up to whitespace, closing paren, closing bracket, or other invalid characters
-  const urlMatch = cleaned.match(/https?:\/\/[^\s\)\]\[<>"]+/);
-  if (urlMatch) {
-    cleaned = urlMatch[0];
-  }
-
-  // Final cleanup: remove any trailing invalid characters that might have been missed
-  // Keep only valid URL characters: alphanumeric, dots, slashes, colons, hyphens, underscores, 
-  // question marks, equals, ampersands, hashes, and percent signs (for encoded URLs)
-  cleaned = cleaned.replace(/[^\w\.\/\:\-\?\=\&\#\%]/g, "");
-
-  return cleaned.trim();
-}
-
 const app = express();
 app.use(cors());
 
@@ -149,22 +108,21 @@ async function generateMeme(args: any) {
       throw new Error(response.data.error_message || "Failed to generate meme");
     }
 
-    const rawMemeUrl = response.data.data?.url || "";
-    const sanitizedMemeUrl = sanitizeUrl(rawMemeUrl);
+    const memeUrl = response.data.data?.url;
 
-    if (!sanitizedMemeUrl) {
-      throw new Error("Failed to extract valid meme URL from API response");
+    if (!memeUrl) {
+      throw new Error("Failed to extract meme URL from API response");
     }
 
     return {
       content: [
         {
           type: "text" as const,
-          text: `Meme generated successfully! Meme image URL: ${sanitizedMemeUrl}`,
+          text: `Meme generated successfully! Meme image URL: ${memeUrl}`,
         },
       ],
       structuredContent: {
-        meme_url: sanitizedMemeUrl,
+        meme_url: memeUrl,
       },
     };
   } catch (error) {
