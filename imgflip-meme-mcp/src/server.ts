@@ -53,18 +53,6 @@ server.registerTool(
         .string()
         .optional()
         .describe("Text for the second text box (usually bottom text)"),
-      text2: z
-        .string()
-        .optional()
-        .describe("Text for the third text box (if template supports it)"),
-      text3: z
-        .string()
-        .optional()
-        .describe("Text for the fourth text box (if template supports it)"),
-      text4: z
-        .string()
-        .optional()
-        .describe("Text for the fifth text box (if template supports it)"),
     }),
     outputSchema: z.object({
       meme_url: z.string(),
@@ -90,9 +78,6 @@ async function generateMeme(args: any) {
     formData.append("text0", args.text0);
 
     if (args.text1) formData.append("text1", args.text1);
-    if (args.text2) formData.append("text2", args.text2);
-    if (args.text3) formData.append("text3", args.text3);
-    if (args.text4) formData.append("text4", args.text4);
 
     const response = await axios.post<ImgflipCaptionResponse>(
       IMGFLIP_CAPTION_IMAGE_URL,

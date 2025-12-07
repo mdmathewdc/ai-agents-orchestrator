@@ -54,16 +54,15 @@ Connect to this server using any MCP-compatible client. The server exposes a sin
 Generates a meme from an Imgflip template with custom text.
 
 **Parameters:**
+
 - `username` (string, required): Your Imgflip username
 - `password` (string, required): Your Imgflip password
 - `template_id` (string, required): The Imgflip template ID (e.g., `'181913649'` for Drake template)
 - `text0` (string, required): Text for the first text box (usually top text)
 - `text1` (string, optional): Text for the second text box (usually bottom text)
-- `text2` (string, optional): Text for the third text box (if template supports it)
-- `text3` (string, optional): Text for the fourth text box (if template supports it)
-- `text4` (string, optional): Text for the fifth text box (if template supports it)
 
 **Returns:**
+
 - `meme_url` (string): Direct URL to the generated meme image
 
 **Example Request:**
@@ -99,28 +98,32 @@ To find available meme templates and their IDs, visit the [Imgflip API documenta
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - npm or yarn
 
 ### Setup
 
 1. Clone the repository:
+
 ```bash
 git clone <repository-url>
 cd imgflip-meme-mcp
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Build the project:
+
 ```bash
 npm run build
 ```
 
 4. Start the server:
+
 ```bash
 npm start
 ```
