@@ -58,10 +58,21 @@ app.post("/generate-meme", async (req, res) => {
     let summary = "";
     let memeUrl = "";
 
-    // Look for URL in the response (Imgflip URLs typically contain imgflip.com)
-    const urlMatch = responseText.match(/https?:\/\/[^\s\)]+/);
-    if (urlMatch) {
-      memeUrl = urlMatch[0];
+    // First, try to extract URL from markdown link format [text](url)
+    const markdownLinkMatch = responseText.match(/\[([^\]]*)\]\((https?:\/\/[^\s\)]+)\)/);
+    if (markdownLinkMatch) {
+      memeUrl = markdownLinkMatch[2]; // Extract the URL part from the markdown link
+    } else {
+      // Fallback: Look for plain URL in the response (Imgflip URLs typically contain imgflip.com)
+      const urlMatch = responseText.match(/https?:\/\/[^\s\)]+/);
+      if (urlMatch) {
+        memeUrl = urlMatch[0];
+      }
+    }
+    
+    // Clean up: remove any remaining markdown formatting if somehow it got through
+    if (memeUrl) {
+      memeUrl = memeUrl.replace(/^\[|\]$/g, ''); // Remove brackets if present
     }
 
     // Try to extract summary from structured format
